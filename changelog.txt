@@ -1,0 +1,5 @@
+v2.1
+
+1. Added writing floats 
+2. Added writing multiple registers of all datatypes 
+3. 'LH' byteorder is now supported (I made a mistake last time). 
