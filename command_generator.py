@@ -5,6 +5,7 @@ import binascii
 def print_spaced_command(modbus_command):
     spaced_command = ' '.join(modbus_command[i:i+2] for i in range(0, len(modbus_command), 2))
     print(spaced_command)
+
 def calculate_crc(data):
     crc = 0xFFFF
     for byte in data:
@@ -132,6 +133,9 @@ def modbus_reading_command_generator(slave_id, function_code, register_address, 
     # Validate register address
     if not (0 <= register_address <= 65535):
         raise ValueError("Register address must be in the range 0 to 65535.")
+
+    if not (1 <= number_of_regs <= 65535):
+        raise ValueError("Number of registers must be in the range 1 to 65535.")
 
     # Convert register address and value to bytes
     register_address_bytes = register_address.to_bytes(2, byteorder='big')
