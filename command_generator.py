@@ -57,12 +57,22 @@ def modbus_command_generator(slave_id, function_code, register_address, value_ar
     # Convert register address and value to bytes
     register_address_bytes = register_address.to_bytes(2, byteorder='big')
 
-    message = bytearray([
-        slave_id,
-        function_code,
-        *register_address_bytes,
-    ])
-
+    if function_code==6:
+        message = bytearray([
+            slave_id,
+            function_code,
+            *register_address_bytes,
+        ])
+    if function_code==16:
+        datatype_length=int((int(datatype[1]+datatype[2])/8)*len(value_array))
+        message = bytearray([
+            slave_id,
+            function_code,
+            *register_address_bytes,
+            0,
+            len(value_array),
+            datatype_length,
+        ])
     for value in value_array:
 
         if datatype[0] == 'U' and value < 0:
