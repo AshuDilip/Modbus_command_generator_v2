@@ -32,7 +32,7 @@ def modbus_command_generator(slave_id, function_code, register_address, value_ar
     if function_code not in {6, 16}:
         raise ValueError("Function code must be 6 (Write Single Register), 16 (Write Multiple Registers).")
 
-    if function_code == 6 and len(value_array)>1:
+    if function_code == 6 and (len(value_array)>1 or int(datatype[1]+datatype[2])/8 > 2):
         raise ValueError("Function code must 16 when writing multiple registers.")
 
     # Validate register address
@@ -70,7 +70,7 @@ def modbus_command_generator(slave_id, function_code, register_address, value_ar
             function_code,
             *register_address_bytes,
             0,
-            len(value_array),
+            int(datatype_length/2),
             datatype_length,
         ])
     for value in value_array:
